@@ -5,7 +5,7 @@ Outputs: SNP csv, pseudohaplotype.txt, rough haplotype network.png, haplotype.NE
 
 ## Usage
 ```python3
-pipeline.py input_path output_path metadata_path outbreak_only outbreaks N_threshold remove_n
+pipeline.py input_path output_path metadata_path outbreak_only outbreaks n_threshold remove_n
 ```
 ## Arguments:
 Description 
@@ -37,7 +37,7 @@ outbreaks = Which outbreaks should be run e.g
 (str)
 -a / None / 1,7,8,19
 
-N_threshold = The number of N's permitted in a sample sequence before exclusion. Samples with more than the N_threshold will be excluded from the run
+n_threshold = The number of N's permitted in a sample sequence before exclusion. Samples with more than the N_threshold will be excluded from the run
 (int)
 5000
 
