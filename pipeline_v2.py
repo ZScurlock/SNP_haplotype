@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Haplotyping pipeline
+SNP_haplotyping
 Created on Mon Dec 21 12:21:06 2020
 
-@author: zgls201
+@author: Zac Scurlock
 """
 import pandas as pd
 import numpy as np
@@ -21,8 +21,8 @@ output_path=sys.argv[2]
 metadata_path=sys.argv[3]
 outbreak_only=sys.argv[4]
 outbreaks=sys.argv[5]
-N_threshold=sys.argv[6]
-remove_N=sys.argv[7]
+n_threshold=sys.argv[6]
+remove_n=sys.argv[7]
 
 def sample_indexes(fasta_object):
     array = fasta_object['fasta'].str.find('>')
@@ -77,7 +77,7 @@ def filtering(sample_data, sample_id):
 
     return sample_data, sample_id
 
-def new_SNP(sample_dict, IDs, remove_N):
+def new_SNP(sample_dict, IDs, remove_n):
     bases = ['A', 'T', 'C', 'G',
              'a', 't', 'c', 'g']
     first = []
@@ -87,7 +87,7 @@ def new_SNP(sample_dict, IDs, remove_N):
         for y in range(len(sample_dict['Samples'])):
             first.append(sample_dict['Samples'][y][IDs[y]][x])
         a = pd.Series(data=first)
-        if not all([first in bases for first in first]) and remove_N:
+        if not all([first in bases for first in first]) and remove_n:
             a=pd.Series(data=None)
         if len(a.value_counts()) >= 2:
             genome[str(x+1)] = first
@@ -404,11 +404,11 @@ def outbreak_loop(outbreak_data, outbreaks):
     print(new_meta)
     return new_meta
 
-def calculate_outbreak(outbreak_data, outbreaks, output_path, filtered_ids, filtered_dict, remove_N):
+def calculate_outbreak(outbreak_data, outbreaks, output_path, filtered_ids, filtered_dict, remove_n):
     outbreak_dict, outbreak_ids = outbreak(outbreak_data, filtered_ids, filtered_dict)
     if len(outbreak_ids) != 0:
         print("Calculating Outbreak SNPs...")
-        outbreak_SNP = new_SNP(outbreak_dict, outbreak_ids, remove_N)
+        outbreak_SNP = new_SNP(outbreak_dict, outbreak_ids, remove_n)
         #print(outbreak_SNP)
         outbreak_hap = append_haplotype(outbreak_SNP)
         #print(outbreak_hap)
@@ -427,7 +427,7 @@ def calculate_outbreak(outbreak_data, outbreaks, output_path, filtered_ids, filt
         outbreak_SNP['genome']=csv_id
         outbreak_haplo.to_csv(str(output_path) + 'outbreak_only.csv', index=False)
 
-def pipeline(input_path, output_path, metadata_path, outbreak_only, outbreaks, N_threshold, remove_N):
+def pipeline(input_path, output_path, metadata_path, outbreak_only, outbreaks, N_threshold, remove_n):
     data = pd.read_csv(str(input_path), 
     delimiter='\n', header=None, names=['fasta'])
     print('Fasta import is complete')
@@ -463,7 +463,7 @@ def pipeline(input_path, output_path, metadata_path, outbreak_only, outbreaks, N
     #Base ^  
     if outbreak_only == str(False):
         print("Calculating all sample SNPS...")
-        snps = new_SNP(filtered_dict, filtered_ids, remove_N)
+        snps = new_SNP(filtered_dict, filtered_ids, remove_n)
         snps_hap = append_haplotype(snps)
         snps_haplo = haplotype_number(snps_hap)
         #Nexus/Graph
@@ -479,12 +479,12 @@ def pipeline(input_path, output_path, metadata_path, outbreak_only, outbreaks, N
         snps_haplo.to_csv(str(output_path) + '.csv', index=False)
         
         new_outbreak = outbreak_loop(used_outbreak_data, outbreaks)
-        calculate_outbreak(new_outbreak,outbreaks,output_path, filtered_ids, filtered_dict, remove_N)
+        calculate_outbreak(new_outbreak,outbreaks,output_path, filtered_ids, filtered_dict, remove_n)
    
     elif outbreak_only == str(True):
         print("Calculating outbreak sample SNPS")
         new_outbreak = outbreak_loop(used_outbreak_data, outbreaks)    
-        calculate_outbreak(new_outbreak,outbreaks,output_path, filtered_ids, filtered_dict, remove_N)
+        calculate_outbreak(new_outbreak,outbreaks,output_path, filtered_ids, filtered_dict, remove_n)
 
 
-pipeline(input_path, output_path, metadata_path, outbreak_only, outbreaks,N_threshold, remove_N)
+pipeline(input_path, output_path, metadata_path, outbreak_only, outbreaks,N_threshold, remove_n)
