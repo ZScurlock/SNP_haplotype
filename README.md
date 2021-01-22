@@ -36,7 +36,6 @@ metadata_path = The path to the outbreak metadata txt file in the format below (
 
 outbreak_only = A T/F statement choosing whether to obtain results for just the samples in the outbreak_metadata.txt.
 		True: only outbreak samples
-		
 		False: All samples in data.fasta and outbreak samples
 (bool)
 
