@@ -16,6 +16,7 @@ Description
 
 Example
 
+-----
 input_path = The path to the fasta file
 
 (str)
