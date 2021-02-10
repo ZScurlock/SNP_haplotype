@@ -3,14 +3,14 @@ A python script for outputting haplotype networks in NEXUS file format for use i
 
 Inputs: Aligned Fasta file, outbreak metadata text file
 
-Outputs: SNP csv, pseudohaplotype.txt, rough haplotype network.png, haplotype.NEX
+Outputs: SNP csv, pseudohaplotype.txt, haplotype network.png, haplotype.NEX
 
 ## Usage
 ```python3
 pipeline.py input_path output_path metadata_path outbreak_only outbreaks n_threshold remove_n
 ```
 ## Arguments:
-Description
+Argument = Description
 
 (type)
 
