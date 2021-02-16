@@ -62,7 +62,7 @@ outbreaks = Which outbreaks should be run e.g
 
 ------
 
-n_threshold = The number of N's permitted in a sample sequence before exclusion. Samples with more than the N_threshold will be excluded from the run
+n_threshold = The number of N's permitted in a sample sequence before exclusion. Samples with more than the n_threshold will be excluded from the run
 
 (int)
 
@@ -70,7 +70,7 @@ n_threshold = The number of N's permitted in a sample sequence before exclusion.
 
 ------
 
-remove_N = A T/F statement choosing to exclude/include SNP positions where there is an N in any sample.
+remove_n = A T/F statement choosing to exclude/include SNP positions where there is an N in any sample.
 
 (bool)
 
