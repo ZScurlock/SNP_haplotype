@@ -1,9 +1,18 @@
 # SNP_haplotype
-A python script for outputting haplotype networks in NEXUS file format for use in Popart.
+A python script for outputting haplotype networks in NEXUS file format for use in Popart haplotyping network software.
 
 Inputs: Aligned Fasta file, outbreak metadata text file
 
-Outputs: SNP csv, pseudohaplotype.txt, haplotype network.png, haplotype.NEX
+Outputs: SNP csv, pseudohaplotype.txt, haplotype network.png, haplotype.nex
+
+### Python dependencies:
+Python 3.6.9
+Pandas 0.22.0
+Numpy 1.19.4
+Networkx 2.5
+matplotlib 2.1.1
+pairsnp 0.07
+
 
 ## Usage
 ```python3
