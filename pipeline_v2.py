@@ -40,12 +40,10 @@ def reformat(fasta_data, index, IDs):
         real_1 = real['fasta'].str.cat(sep='\n')
         real_1 = real_1.replace('\n',"")
         sample_dict['Samples'].append({str(IDs[y]):real_1})
-    
-    #sample_dict['Samples'].append({str(IDs[-1]):fasta_data.iloc[index[-1]+1:len(data)]})
+   
     
     return sample_dict
 
-#redo sample_n_filter
 def sample_n_filter(data, IDs, N_threshold):
     new_dict = {}
     app = []
@@ -170,11 +168,6 @@ def create_nexus(outbreak_data, output_path, filtered_ids, snps_hap, outbreak_sa
     
     label_set = sorted(set(trait_labels))
     
-    #IDs required
-    #included_ids = []
-    #for counter, i in enumerate(outbreak_data['sample']):
-    #    if i in filtered_ids:
-    #        included_ids.append(counter)
     
     ###START####
     textlist = ['#NEXUS',
@@ -183,7 +176,7 @@ def create_nexus(outbreak_data, output_path, filtered_ids, snps_hap, outbreak_sa
                 'BEGIN TAXA;\n', 
                 'DIMENSIONS NTAX=', str(len(filtered_ids)), ';\n\n',
                 'TAXLABELS\n']
-    #NCHAR is the no. of haplotypes!
+    
     textlist2 = [';\n\nEND;\n\n',
                  'BEGIN CHARACTERS;\n',
                  'DIMENSIONS NCHAR='+str(len(snps_hap['haplotype'].iloc[0])) +';''\n',
@@ -226,7 +219,6 @@ def create_nexus(outbreak_data, output_path, filtered_ids, snps_hap, outbreak_sa
     test_file.write('Other Reference;\nMatrix\n')
     
     
-    #array=trait_array(outbreak_data, label_set, included_ids, filtered_ids)
     array, trait_list=create_array(outbreak_data, filtered_ids, label_set)
     for p in range(len(array)):
         test_file.writelines(array['genome'].iloc[p])
@@ -290,12 +282,6 @@ def make_graph(output_path, trait_list, outbreak_sample):
     identical_snps = list({tuple(i) for i in lis})
 
 
-#Skip to 2.
-#Try again with the possible nodes and node list - if not - remove from matrix
-
-
-
-#Have another loop going just in case there are more than 1 set of nodes with the same SNPs
 #Calculate the possible samples we could have
     possible_nodes = list(range(len(dist_matrix)))
     for y in range(len(identical_snps)):
@@ -443,7 +429,7 @@ def pipeline(input_path, output_path, metadata_path, outbreak_only, outbreaks, N
                                 delimiter='\t', header=None, 
                                 names=['sample', 'number', 'p/s'], index_col=None)
     print('Outbreak_data is loaded')
-    #Insert cleaning_dups#
+    
     outbreak_ids = list(outbreak_data['sample'])
     red = outbreak_data['sample'].value_counts()[outbreak_data['sample'].value_counts() >1]
     pos = []
