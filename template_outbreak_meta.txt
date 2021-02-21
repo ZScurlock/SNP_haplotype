@@ -1,0 +1,16 @@
+###Outbreak Metadata Template###
+
+This file is required to add additional information for the Traits block in the NEXUS file for Median Joining Network creation in Popart.
+
+The file requires 3 headerless columns separated by the tab('\t') delimiter:
+1. Name of sample
+2. Outbreak number
+3. Patient(P) / Staff(S)
+
+e.g.
+
+Sample_1	1	P
+Sample_2	2	S
+Sample_3	2	P
+
+
