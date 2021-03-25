@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Mar 22 16:28:59 2021
+Created on Mon Dec 20 16:28:59 2020
 
 @author: zgls201
 """
@@ -46,7 +46,6 @@ class cmd():
         array = fasta_file['fasta'].str.find('>')
         indexes=[x for x in range(len(array)) if array[x] == 0]
         self.indexes = indexes
-        #return indexes
         
     def reformat(self, fasta_data, index, IDs):
         sample_dict = {'Samples':[]}
@@ -59,7 +58,6 @@ class cmd():
             real_1 = real_1.replace('\n',"")
             sample_dict['Samples'].append({str(IDs[y]):real_1})
         self.fasta = sample_dict
-        #return sample_dict
     
     def sample_n_filter(self, data, ids, n_threshold):
         new_dict = {}
@@ -89,7 +87,6 @@ class cmd():
                     print("Excluding sample ID from analysis: " + sample_id[pos[0]] + " due to differences in sample length")
                     del sample_data['Samples'][pos[0]], sample_id[pos[0]]
     
-        #return sample_data, sample_id
         self.fasta = sample_data
         self.ids = sample_id
 
@@ -147,13 +144,9 @@ class cmd():
             snps_out.to_csv(str(output_path) + 'outbreak_only.csv', index=False)
             print('Written SNP file to ' + str(output_path) + 'outbreak_only.csv')
         else:
-            ##csv_id = [str(x) + '_' + 'Outbreak_' + str(outbreak_data['number'].iloc[outbreak_ids.index(x)])
-            #+ str(outbreak_data['p/s'].iloc[outbreak_ids.index(x)]) if x in outbreak_ids else str(x) for x in test.ids]
-            #snps['genome']=csv_id
             snps.to_csv(str(output_path) + '.csv', index=False)
             print('Written SNP file to ' + str(output_path))
             
-
 #Sample class
 class sample():
     def __init__(self, ids):
@@ -162,7 +155,6 @@ class sample():
         self.n_threshold = ""
         self.bases=['A','T','C','G','a','t','c','g']
         
-
 
 class outbreak(cmd):
     def __init__(self, input_path, output_path, metadata_path, outbreak_only, outbreaks,n_threshold, remove_n):
@@ -225,7 +217,7 @@ class outbreak(cmd):
 
         
 
-class Results():
+class results():
     def __init__(self, output_path):
         self.output_path = output_path
         self.trait_list = []
@@ -279,7 +271,7 @@ class Results():
                     'BEGIN TAXA;\n', 
                     'DIMENSIONS NTAX=', str(len(filtered_ids)), ';\n\n',
                     'TAXLABELS\n']
-        #NCHAR is the no. of haplotypes!
+
         textlist2 = [';\n\nEND;\n\n',
                      'BEGIN CHARACTERS;\n',
                      'DIMENSIONS NCHAR='+str(len(snps_hap['haplotype'].iloc[0])) +';''\n',
@@ -321,9 +313,6 @@ class Results():
             test_file.write('Outbreak_' + number + '_' + let +' ')
         test_file.write('Other Reference;\nMatrix\n')
         
-        
-        #array=trait_array(outbreak_data, label_set, included_ids, filtered_ids)
-        #array, trait_list=create_array(outbreak_data, filtered_ids, label_set)
         for p in range(len(array)):
             test_file.writelines(array['genome'].iloc[p])
             test_file.write('\t')
@@ -427,7 +416,6 @@ class Results():
         new_dict2 = {colours_categories.index[x]:colour_dict[colours_categories[x]] 
         for x in range(len(colours_categories))}
         
-        ##
         con = [new_dict2[x] for x in ait.nodes()]
         codes = np.array(con)
         
@@ -456,9 +444,8 @@ class Results():
         print('Minimum spanning tree is complete.')
         plt.savefig(str(seq_input + '.png'))
     
-#start#
-        
-#def run(input_path, output_path, metadata_path, outbreak_only, outbreaks, n_threshold, remove_n):
+#Start#
+
 test = cmd(input_path, output_path, metadata_path,
            outbreak_only, outbreaks, n_threshold, remove_n)
 
@@ -476,9 +463,8 @@ out.remove_duplicates(out.data, out.ids)
 out.meta_outbreaks_used(out.data, out.ids, test.ids)
 
 
-#Outbreak_only here?
+# End of pre-processing data #
 if outbreak_only == str(False):
-    #End of pre-processing data
     samples = [sample(test.ids[i]) for i in range(len(test.ids))]
     
     if len(samples) == len(test.fasta['Samples']):
@@ -489,12 +475,9 @@ if outbreak_only == str(False):
     test.append_haplotype(test.snps)
     test.haplotype_number(test.snps)
     
-    #General methods
     test.write_csv(test.output_path, out.data, test.ids, out.ids, test.snps, test.outbreak_only)
-    
-    
-    
-    ne = Results(output_path)
+
+    ne = results(output_path)
     ne.traits(out.data)
     ne.create_array(out.data, test.ids, ne.trait_list)
     ne.create_nexus(out.data, ne.output_path, test.ids, test.snps,False,
@@ -504,8 +487,6 @@ if outbreak_only == str(False):
     
     out.outbreak_process(out.used_data, out.outbreaks)
     outbreak_samp = [sample(out.used_ids[i]) for i in range(len(out.used_ids))]
-    ##for x in range(len(out.used_ids.index)):
-    #    outbreak_samp[x].fasta = test.fasta['Samples'][out.used_ids.index[x]][outbreak_samp[x].ids]
     
     for x in range(len(out.used_ids)):
         pos = test.ids.index(outbreak_samp[x].ids)
@@ -516,7 +497,7 @@ if outbreak_only == str(False):
     out.haplotype_number(out.snps)
     out.write_csv(out.output_path, out.used_data, test.ids, out.used_ids, out.snps, True)
     
-    me = Results(output_path)
+    me = results(output_path)
     me.traits(out.used_data)
     me.create_array(out.used_data, out.used_ids, me.trait_list)
     me.create_nexus(out.used_data, me.output_path, out.used_ids,out.snps, True,
@@ -524,12 +505,10 @@ if outbreak_only == str(False):
     me.pseudosequence(me.output_path, out.snps, True)
     me.make_graph(me.output_path, me.labels, True)
 
-###Elif
+
 elif outbreak_only == str(True):
     out.outbreak_process(out.used_data, out.outbreaks)
     outbreak_samp = [sample(out.used_ids[i]) for i in range(len(out.used_ids))]
-    ##for x in range(len(out.used_ids.index)):
-    #    outbreak_samp[x].fasta = test.fasta['Samples'][out.used_ids.index[x]][outbreak_samp[x].ids]
     
     for x in range(len(out.used_ids)):
         pos = test.ids.index(outbreak_samp[x].ids)
@@ -540,7 +519,7 @@ elif outbreak_only == str(True):
     out.haplotype_number(out.snps)
     out.write_csv(out.output_path, out.used_data, test.ids, out.used_ids, out.snps, True)
     
-    me = Results(output_path)
+    me = results(output_path)
     me.traits(out.used_data)
     me.create_array(out.used_data, out.used_ids, me.trait_list)
     me.create_nexus(out.used_data, me.output_path, out.used_ids,out.snps, True,
@@ -550,13 +529,3 @@ elif outbreak_only == str(True):
 
 #End#
 
-#input_path = '/mnt/bio-tarako-home/zgls201/git/get_viral_haplotypes/sample-data/test.fna'
-#metadata_path = '/mnt/bio-tarako-home/zgls201/Documents/Testing/sample_test/with_metadata/pipeline_test_meta.txt'
-#output_path = '/mnt/bio-tarako-home/zgls201/Documents/OOP/zoutbreak_2_false'
-#outbreak_only = False
-#outbreaks = '2'
-#n_threshold = 5000
-#remove_n = True
-
-#if __name__=="__main__":
-#run(input_path, output_path, metadata_path, outbreak_only, outbreaks, n_threshold, remove_n)
