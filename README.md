@@ -64,8 +64,8 @@ True
 ------
 
 outbreaks = Which outbreaks should be run e.g
-All outbreaks
-No outbreaks
+All outbreaks,
+No outbreaks,
 Outbreaks 1 and 7
 	    
 (str)
