@@ -64,13 +64,13 @@ True
 ------
 
 outbreaks = Which outbreaks should be run e.g
-	    -a    All outbreaks
-	    None  No outbreaks
-	    1,7	  Outbreaks 1 and 7
+All outbreaks
+No outbreaks
+Outbreaks 1 and 7
 	    
 (str)
 
--a / None / 1,7,8,19
+-a / None / 1,7
 
 ------
 
