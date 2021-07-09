@@ -529,7 +529,7 @@ elif outbreak_only == str(True):
                         me.trait_list, me.array)
         me.pseudosequence(me.output_path, out.snps, True)
         me.make_graph(me.output_path, me.labels, True)
-     else:
+    else:
         print(str(len(outbreak_samp)) + ' outbreak samples have been selected to run. Try changing the outbreak_only or outbreaks arguments')
 #End#
 
