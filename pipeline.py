@@ -491,20 +491,22 @@ if outbreak_only == str(False):
     for x in range(len(out.used_ids)):
         pos = test.ids.index(outbreak_samp[x].ids)
         outbreak_samp[x].fasta = test.fasta['Samples'][pos][outbreak_samp[x].ids]
-    
-    out.find_snps(outbreak_samp, out.used_ids, out.remove_n)
-    out.append_haplotype(out.snps)
-    out.haplotype_number(out.snps)
-    out.write_csv(out.output_path, out.used_data, test.ids, out.used_ids, out.snps, True)
-    
-    me = results(output_path)
-    me.traits(out.used_data)
-    me.create_array(out.used_data, out.used_ids, me.trait_list)
-    me.create_nexus(out.used_data, me.output_path, out.used_ids,out.snps, True,
-                    me.trait_list, me.array)
-    me.pseudosequence(me.output_path, out.snps, True)
-    me.make_graph(me.output_path, me.labels, True)
+        
+    if len(outbreak_samp)> 0:
+        out.find_snps(outbreak_samp, out.used_ids, out.remove_n)
+        out.append_haplotype(out.snps)
+        out.haplotype_number(out.snps)
+        out.write_csv(out.output_path, out.used_data, test.ids, out.used_ids, out.snps, True)
 
+        me = results(output_path)
+        me.traits(out.used_data)
+        me.create_array(out.used_data, out.used_ids, me.trait_list)
+        me.create_nexus(out.used_data, me.output_path, out.used_ids,out.snps, True,
+                        me.trait_list, me.array)
+        me.pseudosequence(me.output_path, out.snps, True)
+        me.make_graph(me.output_path, me.labels, True)
+    else:
+        print(str(len(outbreak_samp)) + ' outbreak samples have been selected to run. Try changing the outbreak_only or outbreaks arguments')
 
 elif outbreak_only == str(True):
     out.outbreak_process(out.used_data, out.outbreaks)
@@ -513,19 +515,21 @@ elif outbreak_only == str(True):
     for x in range(len(out.used_ids)):
         pos = test.ids.index(outbreak_samp[x].ids)
         outbreak_samp[x].fasta = test.fasta['Samples'][pos][outbreak_samp[x].ids]
-    
-    out.find_snps(outbreak_samp, out.used_ids, out.remove_n)
-    out.append_haplotype(out.snps)
-    out.haplotype_number(out.snps)
-    out.write_csv(out.output_path, out.used_data, test.ids, out.used_ids, out.snps, True)
-    
-    me = results(output_path)
-    me.traits(out.used_data)
-    me.create_array(out.used_data, out.used_ids, me.trait_list)
-    me.create_nexus(out.used_data, me.output_path, out.used_ids,out.snps, True,
-                    me.trait_list, me.array)
-    me.pseudosequence(me.output_path, out.snps, True)
-    me.make_graph(me.output_path, me.labels, True)
+        
+    if len(outbreak_samp) > 0:
+        out.find_snps(outbreak_samp, out.used_ids, out.remove_n)
+        out.append_haplotype(out.snps)
+        out.haplotype_number(out.snps)
+        out.write_csv(out.output_path, out.used_data, test.ids, out.used_ids, out.snps, True)
 
+        me = results(output_path)
+        me.traits(out.used_data)
+        me.create_array(out.used_data, out.used_ids, me.trait_list)
+        me.create_nexus(out.used_data, me.output_path, out.used_ids,out.snps, True,
+                        me.trait_list, me.array)
+        me.pseudosequence(me.output_path, out.snps, True)
+        me.make_graph(me.output_path, me.labels, True)
+     else:
+        print(str(len(outbreak_samp)) + ' outbreak samples have been selected to run. Try changing the outbreak_only or outbreaks arguments')
 #End#
 
