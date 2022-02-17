@@ -94,3 +94,6 @@ remove_n = A T/F statement choosing to exclude/include SNP positions where there
 ```
 True
 ```
+# Example haplotype network
+
+![plot](https://github.com/ZScurlock/SNP_haplotype/blob/main/Example_haplotype_network.png?raw=true)
